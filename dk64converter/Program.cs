@@ -8,13 +8,12 @@ namespace DK64Converter {
 	class Program {
 		static string[] formats = {
 			"exits",
-			"loading_zones",
 			// TODO: others
 		};
 
 		static void Main(string[] args) {
 			if (args.Length < 3) {
-				Console.WriteLine("Usage: dk64converter {encode|decode} {exits|loading_zones} <filename>");
+				Console.WriteLine("Usage: dk64converter {encode|decode} {exits} <filename>");
 				return;
 			}
 
@@ -43,6 +42,7 @@ namespace DK64Converter {
 					string json = File.ReadAllText(filename);
 					Exit[] exits = JsonConvert.DeserializeObject<Exit[]>(json);
 					byte[] bytes = BigEndian.write_array(exits);
+					File.WriteAllBytes(newFileName, bytes);
 				}
 			} else if (operation == "decode") {
 				byte[] bytes = File.ReadAllBytes(filename);
